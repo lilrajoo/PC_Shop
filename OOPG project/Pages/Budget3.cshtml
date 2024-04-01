@@ -1,0 +1,175 @@
+﻿@page
+@model OOPG_project.Pages.Budget3Model
+@{
+    ViewData["Title"] = "Budget Page";
+}
+<style>
+    /* Add some custom styling for the OK button */
+    .fancy-button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 20px 40px; /* Larger padding for larger buttons */
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 18px; /* Larger font size for larger buttons */
+        margin: 10px 0; /* Gap between the text and buttons */
+        transition-duration: 0.4s;
+        cursor: pointer;
+        border-radius: 10px;
+    }
+
+        .fancy-button:hover {
+            background-color: white;
+            color: black;
+            border: 2px solid #4CAF50;
+        }
+
+    /* Add some custom styling for the table */
+    .order-summary-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        border: 2px solid #000; /* Thicker border */
+    }
+
+        .order-summary-table th, .order-summary-table td {
+            border: 1px solid #000; /* Border color */
+            padding: 8px;
+            text-align: left;
+        }
+
+        .order-summary-table th {
+            background-color: #f2f2f2; /* Light gray background */
+            color: black;
+        }
+
+        /* Style to make the table black and white */
+        .order-summary-table tr:nth-child(even) {
+            background-color: #f2f2f2; /* Light gray background for even rows */
+        }
+
+        .order-summary-table tr:hover {
+            background-color: #ddd; /* Darker gray background on hover */
+        }
+
+    /* Larger radio buttons and addon options buttons */
+    input[type="radio"], input[type="checkbox"] {
+        transform: scale(1.1);
+    }
+</style>
+
+<h1>Welcome to the $1001-$1500 Budget Page!</h1>
+<h1>Rahul S10243484C</h1>
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <p>
+        <!-- Customer information input fields -->
+        Name: <input type="text" asp-for="Name" />
+        Contact Number: <input type="text" asp-for="ContactNumber" />
+        <!-- Add validation error message for ContactNumber -->
+        <span asp-validation-for="ContactNumber" class="text-danger"></span>
+    </p>
+    <p>
+        Address: <input type="text" asp-for="Address" />
+        Delivery Date: <input type="datetime-local" asp-for="DeliveryDate" format="dd:MM:yyyy" required />
+
+    </p>
+    <h2>PC Options:</h2>
+
+    <input type="radio" asp-for="SelectedPCOption" value="Low-end" />Low-end, CPU: Intel: i7-12700F, GPU: Nvidia: 4060, Ram: 16gb<br />
+    <img src="1100pc.jpg" alt="1100pc" /><br />
+
+    <input type="radio" asp-for="SelectedPCOption" value="High-end" />High-end, CPU: Intel: i9-13000F, GPU: Nvidia: 4080, Ram: 32gb<br />
+    <img src="1500pc.jpg" alt="1500pc" /><br />
+
+    <h2>Addon Options:</h2>
+    <!-- Addon options selection -->
+    <input type="checkbox" asp-for="AddRam" /> Add Ram(*2)<br />
+    <img src="ram.JPG" alt="ram" /><br />
+    <input type="checkbox" asp-for="AddRGB" /> Add RGB<br />
+    <img src="rgb.JPG" alt="rgb" /><br />
+    <input type="checkbox" asp-for="AddWaterCooling" /> Add Water Cooling<br />
+    <img src="waterc.JPG" alt="waterc" /><br />
+
+    <div style="margin-top: 20px;"></div>
+    <input type="submit" value="OK" class="fancy-button" />
+</form>
+
+@if (Model.TotalCost > 0)
+{
+    <!-- Display order summary if TotalCost is greater than 0 -->
+    <h2>Order Summary:</h2>
+    <table class="order-summary-table">
+        <!-- Table for displaying order summary details -->
+        <!-- Customer Information -->
+        <tr>
+            <th>Customer Information</th>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+
+        <tr>
+            <!-- Display customer information -->
+            <td>Name: @Model.Name</td>
+            <td>Contact Number: @Model.ContactNumber</td>
+            <td>Address: @Model.Address</td>
+            <td>Delivery Date: @Model.DeliveryDate.ToString("dd:MM:yyyy")</td>
+        </tr>
+
+        <!-- PC Option -->
+        <tr>
+            <!-- Display selected PC option -->
+            <th>PC Option:</th>
+            <td>@Model.SelectedPCOption</td>
+            <td></td>
+            <td></td>
+        </tr>
+
+        <!-- Addons -->
+        @if (Model.AddRam || Model.AddRGB || Model.AddWaterCooling)
+        {
+            <!-- Display selected addons if any -->
+            <tr>
+                <!-- Addons information -->
+                <th>Addons:</th>
+                <td>
+                    @if (Model.AddRam)
+                    {
+                        <span>Add Ram</span>
+                        @if (Model.AddRGB || Model.AddWaterCooling)
+                        {
+                            <span>, </span> <!-- Add a comma if AddRGB or AddWaterCooling is selected -->
+                        }
+                    }
+                    @if (Model.AddRGB)
+                    {
+                        <span>Add RGB</span>
+                        @if (Model.AddWaterCooling)
+                        {
+                            <span>, </span> <!-- Add a comma if AddWaterCooling is selected -->
+                        }
+                    }
+                    @if (Model.AddWaterCooling)
+                    {
+                        <span>Add Water Cooling</span>
+                    }
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+        }
+
+        <!-- Total Cost -->
+        <tr>
+            <!-- Display total cost including GST -->
+            <th>Total Cost (including 9% GST):</th>
+            <td>$@Model.TotalCost</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+}
