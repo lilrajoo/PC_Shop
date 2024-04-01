@@ -1,0 +1,1 @@
+A Polytechnic Project where I utilised my C# skills and HTML skills to create a website. This website is named PC-Shop, where according to the user's budget, it leaads you to a pre-built PC, with addons. A summary of the order is given where the Name, Contact Info, Address, Delivery Data and the PC addon(s) if any and the total price is given(inclusive of gst).
